@@ -8,14 +8,17 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
   
   @IBOutlet weak var nextLyricLabel: UILabel!
   
   @IBOutlet weak var buttoniOSSings: UIButton!
   @IBOutlet weak var buttonWebSings: UIButton!
+  @IBOutlet weak var buttonRandomSings: UIButton!
   
   var reactView:RCTRootView!
+  var tableView:UITableView!
+  var items:NSMutableArray = ["Who's Singing?" as NSString]
   
   let lyricsManager:LyricsManager = LyricsManager()
   
@@ -44,6 +47,15 @@ class MainViewController: UIViewController {
     // Add Button Events
     buttoniOSSings.addTarget(self, action: #selector(MainViewController.lionelSingsTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
     buttonWebSings.addTarget(self, action: #selector(MainViewController.adeleSingsTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+    buttonRandomSings.addTarget(self, action: #selector(MainViewController.randomSingsTapped(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+    
+    // add table view
+    tableView = UITableView(frame: CGRectMake(100, 550, 200, 200))
+    
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+    self.view.addSubview(tableView)
   }
   override func viewWillAppear(animated: Bool) {
     resizeView()
@@ -91,6 +103,27 @@ class MainViewController: UIViewController {
     return false
   }
   
+  // MARK: UITableView
+  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    return 1
+  }
+  
+  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.items.count
+  }
+  
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
+    
+    cell.textLabel?.text = self.items[indexPath.row] as? String
+    
+    return cell
+  }
+  
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    print("You selected cell #\(indexPath.row)!")
+  }
+  
   // MARK: Accessor Methods
   
   // MARK: Public Methods
@@ -111,4 +144,7 @@ class MainViewController: UIViewController {
     lyricsManager.playNextLyricForAdele()
   }
   
+  func randomSingsTapped(sender:UIButton) {
+    lyricsManager.playNextRandomLyric()
+  }
 }

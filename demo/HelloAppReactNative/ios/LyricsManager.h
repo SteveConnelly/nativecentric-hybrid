@@ -12,7 +12,10 @@
 @interface LyricsManager : NSObject<RCTBridgeModule>
 
 @property (nonatomic, strong) RCTBridge *defaultBridge;
+@property (nonatomic) int rowCount;
 
 - (void) playNextLyricForLionel;
 - (void) playNextLyricForAdele;
+- (void) playNextRandomLyric;
+- (void) playNextLyricByArtist:(NSString*) name;
 @end

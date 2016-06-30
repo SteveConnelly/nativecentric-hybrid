@@ -21,10 +21,15 @@ class HelloApp extends Component {
     this.subscribeToNextLyric = NativeAppEventEmitter.addListener(
       'hello.NextLyric', this._onNextLyric
     );
+
+    this.subscribeToRandLyric = NativeAppEventEmitter.addListener(
+      'hello.NextLyricRandom', this._onNextLyric
+    );
   }
 
   componentWillUnmount() {
     this.subscribeToNextLyric.remove();
+    this.subscribeToRandLyric.remove();
   }
 
   render() {
@@ -53,6 +58,14 @@ class HelloApp extends Component {
               </Text>
             </View>
           </TouchableHighlight>
+          <TouchableHighlight style={styles.touchable}
+            onPress={this._onPressRandomSings}>
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>
+                Random
+              </Text>
+            </View>
+          </TouchableHighlight>
         </View>
       </View>
     );
@@ -65,11 +78,28 @@ class HelloApp extends Component {
   _onPressAdeleSings() {
     LyricsManager.playNextAdeleLyric();
   }
+  _onPressRandomSings() {
+    LyricsManager.playNextLyricRandom();
+  }
 
   // Event Listeners
   _onNextLyric(eventData) {
     console.log(eventData);
     this.setState(eventData);
+  }
+
+  _onLyricRandom(eventData) {
+    console.log("Random");
+    var rand = Math.floor((Math.random() * 10) + 1);
+    var singer = "";
+
+    if (rand % 2 == 0) {
+      singer = "Lionel";
+    } else {
+      singer = "Adele";
+    }
+
+    LyricsManager.playNextLyricBy(singer);
   }
 }
 
