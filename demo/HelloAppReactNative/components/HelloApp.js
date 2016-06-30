@@ -23,7 +23,7 @@ class HelloApp extends Component {
     );
 
     this.subscribeToRandLyric = NativeAppEventEmitter.addListener(
-      'hello.NextLyricRandom', this._onNextLyric
+      'hello.NextLyricRandom', this._onLyricRandom
     );
   }
 

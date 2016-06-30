@@ -18,4 +18,5 @@
 - (void) playNextLyricForAdele;
 - (void) playNextRandomLyric;
 - (void) playNextLyricByArtist:(NSString*) name;
+- (void) invokeRandomViaReact;
 @end

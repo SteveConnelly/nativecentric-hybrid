@@ -145,6 +145,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
   }
   
   func randomSingsTapped(sender:UIButton) {
-    lyricsManager.playNextRandomLyric()
+    lyricsManager.invokeRandomViaReact()
   }
 }
